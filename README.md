@@ -1,10 +1,24 @@
-# GAS開発環境構築手順
+# GAS 開発環境構築手順
 
 このプロジェクトでは、Google Apps Script (GAS) をローカル環境で開発するために `clasp` を使用しています。
 
 ## 前提条件
 
-*   Node.js がインストールされていること
+- Node.js がインストールされていること
+
+## プロジェクト設定
+
+### 改行コードの統一 (LF)
+
+Windows / Mac / Linux 間での開発の整合性を保つため、プロジェクト内の改行コードは **LF** に統一しています。
+
+- **`.gitattributes`**: Git へのコミット時に強制的に LF に変換します。
+- **`.editorconfig`**: エディタ（VS Code 等）でのファイル作成・保存時に LF を適用します。
+  - VS Code を使用する場合は、拡張機能 **EditorConfig for VS Code** のインストールを推奨します。
+
+### バージョン管理
+
+- **`.gitignore`**: `node_modules` や `clasp` の設定ファイル（`.clasp.json`）など、Git 管理不要なファイルを除外しています。
 
 ## セットアップ手順
 
@@ -17,8 +31,8 @@ npm init -y
 npm install -D @google/clasp @types/google-apps-script
 ```
 
-*   `@google/clasp`: GASプロジェクトを管理（作成、アップロード、ダウンロードなど）するためのツール
-*   `@types/google-apps-script`: ローカルエディタで補完を効かせるための型定義ファイル
+- `@google/clasp`: GAS プロジェクトを管理（作成、アップロード、ダウンロードなど）するためのツール
+- `@types/google-apps-script`: ローカルエディタで補完を効かせるための型定義ファイル
 
 ### 2. Google アカウントへのログイン
 
@@ -45,18 +59,19 @@ npx clasp login
 npx clasp create --title "gas01" --type standalone
 ```
 
-*   `--title`: プロジェクト名
-*   `--type`: スクリプトの種類（`standalone` はスプレッドシートなどに紐づかない独立したスクリプト）
+- `--title`: プロジェクト名
+- `--type`: スクリプトの種類（`standalone` はスプレッドシートなどに紐づかない独立したスクリプト）
 
 ## 開発の流れ
 
 1.  ローカルでコードを書く (`.js` または `.ts`)
 2.  Google ドライブへアップロードする
     ```bash
-    npx clasp push
+    npm run push
     ```
-3.  ブラウザでエディタを開く（必要な場合）
+    ※ `clasp push` のショートカットです。
+3.  ブラウザでエディタを開く（動作確認用）
     ```bash
-    npx clasp open
+    npm run open
     ```
-
+    ※ `clasp open-script` のショートカットです。
