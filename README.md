@@ -1,6 +1,7 @@
 # GAS 開発環境構築手順
 
-このプロジェクトでは、Google Apps Script (GAS) をローカル環境で開発するために `clasp` を使用しています。
+このプロジェクトでは、Google Apps Script (GAS) をローカル環境で開発するために `clasp` を使用しています。  
+コードは **TypeScript** で記述されています。
 
 ## 前提条件
 
@@ -28,11 +29,13 @@ Windows / Mac / Linux 間での開発の整合性を保つため、プロジェ�
 
 ```bash
 npm init -y
-npm install -D @google/clasp @types/google-apps-script
+npm install -D @google/clasp @types/google-apps-script typescript @types/node
 ```
 
 - `@google/clasp`: GAS プロジェクトを管理（作成、アップロード、ダウンロードなど）するためのツール
 - `@types/google-apps-script`: ローカルエディタで補完を効かせるための型定義ファイル
+- `typescript`: TypeScript コンパイラ
+- `@types/node`: Node.js の型定義（開発ツール用）
 
 ### 2. Google アカウントへのログイン
 
@@ -64,13 +67,18 @@ npx clasp create --title "gas01" --type standalone
 
 ## 開発の流れ
 
-1.  ローカルでコードを書く (`.js` または `.ts`)
-2.  Google ドライブへアップロードする
+1.  ローカルで TypeScript コードを書く (`.ts`)
+2.  型チェックを実行（オプション）
+    ```bash
+    npm run typecheck
+    ```
+    ※ 型エラーがないか確認できます。
+3.  Google ドライブへアップロードする
     ```bash
     npm run push
     ```
-    ※ `clasp push` のショートカットです。
-3.  ブラウザでエディタを開く（動作確認用）
+    ※ `clasp push` のショートカットです。TypeScript ファイルは自動的に GAS にアップロードされます。
+4.  ブラウザでエディタを開く（動作確認用）
     ```bash
     npm run open
     ```
