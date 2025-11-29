@@ -19,7 +19,8 @@ Windows / Mac / Linux 間での開発の整合性を保つため、プロジェ�
 
 ### バージョン管理
 
-- **`.gitignore`**: `node_modules` や `clasp` の設定ファイル（`.clasp.json`）など、Git 管理不要なファイルを除外しています。
+- **`.gitignore`**: `node_modules` や `clasp` のアクティブな設定ファイル（`.clasp.json`）など、Git 管理不要なファイルを除外しています。
+- **環境設定ファイル**: `.clasp-prod.json` (本番) と `.clasp-staging.json` (ステージング) は Git 管理対象です。チームで同じデプロイ先を共有します。
 
 ## セットアップ手順
 
@@ -54,32 +55,28 @@ npx clasp login
 1.  [Google Apps Script ユーザー設定](https://script.google.com/home/usersettings) にアクセスします。
 2.  「Google Apps Script API」を **オン** に設定します。
 
-### 4. GAS プロジェクトの作成
+## 開発の流れ（マルチ環境運用）
 
-新しい GAS プロジェクトを作成します。
+本プロジェクトは「本番 (Production)」と「ステージング (Staging)」の2つの環境を持っています。
 
-```bash
-npx clasp create --title "gas01" --type standalone
-```
+### コマンド一覧
 
-- `--title`: プロジェクト名
-- `--type`: スクリプトの種類（`standalone` はスプレッドシートなどに紐づかない独立したスクリプト）
+| 動作 | ステージング (Staging) | 本番 (Production) | 備考 |
+| :--- | :--- | :--- | :--- |
+| **アップロード** | `npm run push:staging` | `npm run push:prod` | コンパイルしてアップロード |
+| **エディタを開く** | `npm run open:staging` | `npm run open:prod` | ブラウザで確認 |
+| **型チェック** | `npm run typecheck` | - | アップロード前に実行推奨 |
 
-## 開発の流れ
+### 基本的なフロー
 
-1.  ローカルで TypeScript コードを書く (`.ts`)
-2.  型チェックを実行（オプション）
+1.  ローカルでコードを変更・実装する
+2.  **ステージング環境**へアップロードして動作確認する
     ```bash
-    npm run typecheck
+    npm run push:staging
+    npm run open:staging
     ```
-    ※ 型エラーがないか確認できます。
-3.  Google ドライブへアップロードする
+    ※ ここで他のメンバーに確認してもらうことも可能です。
+3.  問題なければ**本番環境**へアップロードする
     ```bash
-    npm run push
+    npm run push:prod
     ```
-    ※ `clasp push` のショートカットです。TypeScript ファイルは自動的に GAS にアップロードされます。
-4.  ブラウザでエディタを開く（動作確認用）
-    ```bash
-    npm run open
-    ```
-    ※ `clasp open-script` のショートカットです。

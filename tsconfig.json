@@ -9,9 +9,11 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "types": ["google-apps-script"]
+    "types": ["google-apps-script"],
+    "rootDir": "./src",
+    "outDir": "./build"
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }
 
